@@ -11,8 +11,12 @@ body
     justify-content: center;
     align-items:center;
     min-height: 100vh;
-    background: orange;
-
+    margin: 0;
+  padding: 0;
+  background-attachment: fixed;   
+  background-position: center;    
+  
+    
 }
 .container {
     position: relative;
@@ -21,14 +25,18 @@ body
     justify-content: center;
     align-items: center;
     gap: 30px;
-    background: greenyellow;
-    padding: 40px 60px
+   
+    padding: 40px 60px;
+    background: transparent;
+    
 }
 h2{
     font-size: 3em;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 4em;
+    color: white;
+    
 }
 .reset
 {
@@ -50,16 +58,22 @@ h2{
     width: fit-content;
     height: 400px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr); 
     flex-wrap: wrap;
     gap: 10px;
     transform-style: preserve-3d;
     perspective: 500px;
-    margin: 20px auto;
+    /*margin: 20px auto;*/
     justify-content: center;
+    perspective: 1000px;
    
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
     
-   
+    
+    
 }
 .item {
     position:relative;
@@ -69,32 +83,87 @@ h2{
     justify-content: center;
     align-items: center; 
     transition: 0.25s; 
-    transform: rotate(180deg);
+    transform-style: preserve-3d;
+    
+   
+}
 
+.item.matched { 
+    cursor: not-allowed;
 }
-.item.boxOpen {
-    transform: rotateY('0deg')
-}
-.item::after{
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: blue;
-   /* opacity: 0.85; */
-    transition: 0.25;
-    transform: rotateY(0deg);
+
+.item .face {
+    transform-style: preserve-3d;
     backface-visibility: hidden;
-}
-.item img {
-    object-fit: contain;
-    border-radius: 8px;
-    height: 100px;
-    width: 100px;
-    border-radius: 8px;
+    transition: all 500ms;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color:#FFF;
     border: 2px solid black;
-    object-position: center;
-    background-color: whitesmoke;   
+    border-radius: 8px;
+    &.flip {
+        background-color: #333;
+        transform: rotateY(0);
+    }
+    &.flop {
+        transform: rotateY(-180deg);
+        object-fit: contain;
+        height: 100px;
+        width: 100px;
+        
+        
+        object-position: center;
+    }
 }
-.boxOpen:after {
-    transform: rotateY(180deg);
+
+.item.boxOpen .flip,
+.item.boxMatch .flip { 
+  transform: rotateY(180deg); 
 }
+
+.item.boxOpen .flop,
+.item.boxMatch .flop { 
+  transform: rotateY(0deg); 
+}
+
+@keyframes match-blink {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 0, 0); }
+  50%      { box-shadow: 0 0 35px 15px blueviolet ; }
+}
+
+.item.matchBlink .flop {
+  animation: match-blink 0.8s ease-in-out 1;}
+
+/* RED deny blink for clicking already-matched cards */
+@keyframes deny-blink {
+  0%, 100% { box-shadow: none; }
+  50% {
+    box-shadow:
+      0 0 35px 15px rgba(255, 0, 0, 1),
+      0 0 60px 30px rgba(255, 120, 120, 0.9);
+  }
+}
+.item.denyBlink .flop { animation: deny-blink 0.5s ease-in-out 1; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: url("https://static.vecteezy.com/system/resources/previews/035/514/201/large_2x/ai-generated-gif-image-of-soccer-ball-with-fire-behind-it-free-photo.jpg") center center / cover no-repeat;
+  background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
+.container h2{
+ text-align: center;
+}
+/*https://files.123freevectors.com/wp-content/original/502496-football-on-fire-image.jpg*/
+
